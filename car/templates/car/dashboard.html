@@ -1,0 +1,76 @@
+{% extends 'car/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Dashboard Overview</h2>
+    <div class="btn-group">
+        <button class="btn btn-primary">Export Data</button>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Total Inventory</h5>
+                <h2 class="display-6">{{ total_cars }}</h2>
+                <p class="card-text">Cars in stock</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Available Cars</h5>
+                <h2 class="display-6">{{ active_cars }}</h2>
+                <p class="card-text">Ready for sale</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h5 class="card-title">Inventory Value</h5>
+                <h2 class="display-6">₦{{ total_value|floatformat:0 }}</h2>
+                <p class="card-text">Total worth</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5>Recently Added Cars</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Car</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Date Added</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for car in recent_cars %}
+                    <tr>
+                        <td>{{ car.year }} {{ car.make }} {{ car.model }}</td>
+                        <td>₦{{ car.price|floatformat:0 }}</td>
+                        <td>
+                            {% if car.sold %}
+                            <span class="badge bg-danger">Sold</span>
+                            {% else %}
+                            <span class="badge bg-success">Available</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ car.date_added|date:"M d, Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

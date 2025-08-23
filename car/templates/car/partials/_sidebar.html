@@ -1,0 +1,30 @@
+<ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" 
+           href="{% url 'dashboard' %}">
+            <i class="fas fa-tachometer-alt"></i> Dashboard
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'car_list' %}active{% endif %}" 
+           href="{% url 'car_list' %}">
+            <i class="fas fa-car"></i> Car Inventory
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link {% if request.resolver_match.url_name == 'add_car' %}active{% endif %}" 
+           href="{% url 'add_car' %}">
+            <i class="fas fa-plus-circle"></i> Add New Car
+        </a>
+    </li>
+    <li class="nav-item mt-3">
+        <a class="nav-link" href="/admin" target="_blank">
+            <i class="fas fa-cog"></i> Admin Panel
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-danger" href="{% url 'logout' %}">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </li>
+</ul>

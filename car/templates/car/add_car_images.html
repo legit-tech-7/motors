@@ -1,0 +1,64 @@
+{% extends 'car/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Manage Images for {{ car.year }} {{ car.make }} {{ car.model }}</h2>
+    
+    <!-- Upload Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Upload New Image</h5>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.image.label_tag }}
+                    {{ form.image }}
+                    <div class="form-text">Select an image to upload</div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-upload"></i> Upload Image
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Image Gallery -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Current Images</h5>
+            {% if images %}
+            <div class="row g-3">
+                {% for image in images %}
+                <div class="col-md-4 col-lg-3">
+                    <div class="card h-100">
+                        <img src="{{ image.image.url }}" class="card-img-top img-fluid" style="height: 180px; object-fit: cover;">
+                        <div class="card-body">
+                            {% if image.is_main %}
+                            <span class="badge bg-success">Main Image</span>
+                            {% else %}
+                            <a href="{% url 'set_main_image' image.id %}" class="btn btn-sm btn-outline-primary">
+                                Set as Main
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer">
+                            <a href="{% url 'delete_image' image.id %}" class="btn btn-sm btn-danger">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">No images uploaded yet.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{% url 'car_list' %}" class="btn btn-secondary mt-3">
+        <i class="bi bi-arrow-left"></i> Back to Car List
+    </a>
+</div>
+{% endblock %}
