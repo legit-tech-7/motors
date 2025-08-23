@@ -155,3 +155,8 @@ def car_detail(request, pk):
         "main_image": main_image,
         "images": images,
     })
+
+from django.shortcuts import render
+
+def contact(request):
+    return render(request, 'car/contact.html')

@@ -23,4 +23,5 @@ urlpatterns = [
     
     # Settings
     path('settings/', views.settings, name='settings'),
+    path('contact/', views.contact, name='contact'),
 ]
