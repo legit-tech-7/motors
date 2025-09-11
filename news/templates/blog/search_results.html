@@ -1,0 +1,46 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}Search Results - BBC Blog{% endblock %}
+
+{% block content %}
+<div class="bbc-container">
+    <!-- Search Header -->
+    <div class="search-header">
+        <h1>Search Results</h1>
+        <p>Showing results for "{{ query }}"</p>
+    </div>
+
+    <!-- Search Results -->
+    {% if posts %}
+    <div class="search-results">
+        {% for post in posts %}
+        <div class="search-result-item">
+            <h3><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h3>
+            <p class="result-excerpt">{{ post.excerpt|default:post.content|truncatewords:30 }}</p>
+            <div class="result-meta">
+                <span class="result-category" style="color: {{ post.category.color }};">
+                    {{ post.category.name }}
+                </span>
+                <span class="result-date">{{ post.published_date|date:"M d, Y" }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-results">
+        <h3>No results found for "{{ query }}"</h3>
+        <p>Try different keywords or browse our categories.</p>
+    </div>
+    {% endif %}
+
+    <!-- Search Again -->
+    <div class="search-again">
+        <h3>Search Again</h3>
+        <form action="{% url 'search_posts' %}" method="get" class="search-form">
+            <input type="text" name="q" value="{{ query }}" placeholder="Search BBC Blog" class="search-input">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

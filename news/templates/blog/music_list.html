@@ -1,0 +1,292 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}Music - BBC Blog{% endblock %}
+
+{% block content %}
+<style>
+/* === Container Reset === */
+.bbc-container {
+    background: #f6f6f6;
+    padding: 0;
+}
+
+/* === Header === */
+.music-header {
+    background: linear-gradient(135deg, #fa4b2d 0%, #e91878 100%);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.music-header h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    font-family: 'Georgia', serif;
+    font-weight: bold;
+}
+
+.music-header p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    margin-bottom: 0;
+}
+
+/* === Content Section === */
+.music-content {
+    padding: 40px 10px;
+}
+
+.music-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.music-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* === Music Card === */
+.music-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.music-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+}
+
+/* === Cover Image === */
+.music-cover {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
+
+/* === Info === */
+.music-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.music-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+    line-height: 1.3;
+    font-family: 'Georgia', serif;
+}
+
+.music-artist {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.music-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 15px;
+}
+
+/* === Action Buttons === */
+.music-actions {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.play-btn, .download-btn {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.play-btn {
+    background: #bb1919;
+    color: white;
+}
+
+.play-btn:hover {
+    background: #a01515;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(187,25,25,0.3);
+}
+
+.download-btn {
+    background: #333;
+    color: white;
+}
+
+.download-btn:hover {
+    background: #555;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* === No Content === */
+.no-content {
+    text-align: center;
+    padding: 60px 15px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e6e6e6;
+    grid-column: 1 / -1;
+    color: #666;
+}
+
+.no-content p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* === Special Section === */
+.special-section {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #ff512f, #dd2476);
+    color: white;
+    text-align: center;
+    padding: 30px 15px;
+    margin: 20px 0;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.page-btn {
+    background: #bb1919;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 0 5px;
+    font-weight: 600;
+}
+
+.page-btn:hover {
+    background: #a01515;
+}
+
+
+/* === Animations === */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Responsive Design === */
+@media (max-width: 1024px) {
+    .music-header h1 { font-size: 2.5rem; }
+    .music-header p { font-size: 1.15rem; }
+}
+
+@media (max-width: 768px) {
+    .music-header h1 { font-size: 2.2rem; }
+    .music-header p { font-size: 1.05rem; }
+    .music-actions { flex-direction: column; gap: 10px; }
+}
+
+@media (max-width: 480px) {
+    .music-header h1 { font-size: 1.8rem; }
+    .music-header p { font-size: 1rem; }
+    .music-card { max-width: 100%; }
+    .music-cover { aspect-ratio: 4/3; }
+    .music-info { padding: 15px; }
+    .music-title { font-size: 1.1rem; }
+    .music-artist { font-size: 0.95rem; }
+    .play-btn, .download-btn { font-size: 0.95rem; padding: 12px 0; }
+}
+</style>
+
+<div class="bbc-container">
+    <!-- Header -->
+    <div class="music-header">
+        <h1>BBC Music</h1>
+        <p>Discover and download the latest tracks</p>
+    </div>
+
+    <!-- Music Grid -->
+    <div class="music-content">
+        <div class="music-container">
+            <div class="music-grid">
+                {% for track in page_obj %}
+                <div class="music-card">
+                    {% if track.cover_image %}
+                    <img src="{{ track.cover_image.url }}" alt="{{ track.title }}" class="music-cover">
+                    {% else %}
+                    <div style="background: #f0f0f0; height: 180px; display: flex; align-items: center; justify-content: center; color: #999;">
+                        <span style="font-size: 3rem;">🎵</span>
+                    </div>
+                    {% endif %}
+                    <div class="music-info">
+                        <h3 class="music-title">{{ track.title }}</h3>
+                        <p class="music-artist">{{ track.artist }}{% if track.album %} - {{ track.album }}{% endif %}</p>
+
+                        <div class="music-stats">
+                            <span>▶️ {{ track.play_count }}</span>
+                            <span>📥 {{ track.download_count }}</span>
+                        </div>
+
+                        <div class="music-actions">
+                            <a href="{% url 'music_detail' track.pk %}" class="play-btn">Play</a>
+                            <a href="{% url 'download_music' track.pk %}" class="download-btn">Download</a>
+                        </div>
+                    </div>
+                </div>
+
+                {% if forloop.counter|divisibleby:7 %}
+                <div class="special-section">
+                    🌟 Featured Section 🌟 <br>
+                    Highlighted content or promotions go here.
+                </div>
+                {% endif %}
+
+                {% empty %}
+                <div class="no-content">
+                    <p>No music tracks available yet. Check back soon!</p>
+                    <p style="font-size: 2rem;">🎵</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="pagination" style="text-align:center; margin-top:30px;">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="page-btn">« Previous</a>
+    {% endif %}
+
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="page-btn">Next »</a>
+    {% endif %}
+</div>
+
+{% endblock %}

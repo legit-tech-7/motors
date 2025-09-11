@@ -1,0 +1,171 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}About Us - BBC Blog{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* About Page Specific Styles */
+    .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, #bb1919 0%, #8a1010 100%);
+        color: white;
+        border-bottom: 3px solid #e6e6e6;
+    }
+
+    .page-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        font-family: 'Georgia', serif;
+        font-weight: bold;
+    }
+
+    .page-header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+    .page-content {
+        padding: 0 20px 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .about-section {
+        margin-bottom: 40px;
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border: 1px solid #e6e6e6;
+    }
+
+    .about-section h2 {
+        color: #bb1919;
+        margin-bottom: 20px;
+        font-family: 'Georgia', serif;
+        font-size: 1.8rem;
+        border-bottom: 2px solid #e6e6e6;
+        padding-bottom: 10px;
+    }
+
+    .about-section h3 {
+        color: #333;
+        margin: 25px 0 15px;
+        font-size: 1.3rem;
+    }
+
+    .about-section p {
+        line-height: 1.7;
+        margin-bottom: 15px;
+        color: #666;
+        font-size: 1rem;
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-top: 25px;
+    }
+
+    .value-item {
+        background: #f8f8f8;
+        padding: 25px;
+        border-radius: 8px;
+        border-left: 4px solid #bb1919;
+        transition: transform 0.3s ease;
+    }
+
+    .value-item:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .value-item h3 {
+        color: #bb1919;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .page-header h1 {
+            font-size: 2rem;
+        }
+        
+        .page-header p {
+            font-size: 1.1rem;
+        }
+        
+        .values-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .about-section {
+            padding: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bbc-container">
+    <div class="page-header">
+        <h1>About BBC Blog</h1>
+        <p>Learn more about our mission, values, and team</p>
+    </div>
+                <div style="height: 150px; width: 100%; background-color: #14db14;"> ad placeholder</div>
+
+
+    <div class="page-content">
+        <section class="about-section">
+            <h2>Our Mission</h2>
+            <p>BBC Blog is committed to delivering accurate, timely, and engaging news content to our readers worldwide. 
+               We strive to maintain the highest standards of journalistic integrity while embracing innovation in digital storytelling.</p>
+        </section>
+
+        <section class="about-section">
+            <h2>Our History</h2>
+            <p>Founded with the vision of creating a modern digital news platform, BBC Blog has grown from a small startup 
+               to a respected source of news and information. Our journey began with a simple goal: to make quality journalism 
+               accessible to everyone.</p>
+        </section>
+                    <div style="height: 150px; width: 100%; background-color: #14db14;"> ad placeholder</div>
+
+
+        <section class="about-section">
+            <h2>Our Values</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <h3>Accuracy</h3>
+                    <p>We prioritize factual reporting and thorough verification of all information before publication.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Integrity</h3>
+                    <p>We maintain editorial independence and adhere to strict ethical standards in all our reporting.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Innovation</h3>
+                    <p>We continuously explore new ways to tell stories and engage with our audience.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Community</h3>
+                    <p>We believe in serving our readers and contributing positively to the communities we cover.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2>Our Team</h2>
+            <p>Our diverse team of journalists, editors, and digital experts work together to bring you the best news coverage. 
+               With backgrounds from around the world, we bring unique perspectives to every story.</p>
+        </section>
+    </div>
+</div>
+            <div style="height: 150px; width: 100%; background-color: #14db14;"> ad placeholder</div>
+
+{% endblock %}
+

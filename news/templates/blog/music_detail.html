@@ -1,0 +1,381 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}{{ track.title }} - BBC Music{% endblock %}
+
+{% block content %}
+<style>
+/* ------------------------------ */
+/* Body & Typography */
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #222;
+    background: #f5f5f5;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ------------------------------ */
+/* Header */
+.music-detail-header {
+    background: linear-gradient(135deg, #fa4b2d, #e91878);
+    color: #fff;
+    padding: 50px 20px 40px;
+}
+
+.music-detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.breadcrumb {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 10px;
+}
+
+.breadcrumb a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.music-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.music-artist {
+    font-size: 1.2rem;
+    opacity: 0.85;
+}
+
+/* ------------------------------ */
+/* Player Card */
+.music-player-container {
+    background: #fff;
+    border-radius: 15px;
+    padding: 35px 25px;
+    margin: -60px auto 40px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.music-player-container:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.music-cover-large {
+    width: 260px;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.audio-player {
+    width: 100%;
+    margin: 25px 0;
+    outline: none;
+}
+
+.music-stats {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.download-btn-large {
+    background: #bb1919;
+    color: #fff;
+    padding: 14px 40px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.download-btn-large:hover {
+    background: #a01515;
+    transform: translateY(-2px);
+}
+
+/* ------------------------------ */
+/* Music Info Section */
+.music-info {
+    background: #fff;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.info-item {
+    padding: 18px 15px;
+    background: #f8f8f8;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+
+.info-label {
+    font-weight: 600;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 1rem;
+    color: #222;
+}
+
+/* ------------------------------ */
+/* Related Music */
+.related-music {
+    margin-top: 50px;
+}
+
+.related-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.related-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    padding: 15px;
+}
+
+.related-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+.related-cover {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.related-title-small {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 5px 0;
+    color: #222;
+}
+
+.related-artist {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+/* ------------------------------ */
+/* Responsive */
+@media (max-width: 1024px) {
+    .music-cover-large {
+        width: 200px;
+        height: 200px;
+    }
+
+    .music-title {
+        font-size: 2rem;
+    }
+
+    .music-artist {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .music-player-container {
+        padding: 25px 15px;
+        margin: -50px 15px 30px;
+    }
+
+    .music-cover-large {
+        width: 160px;
+        height: 160px;
+    }
+
+    .music-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .download-btn-large {
+        padding: 12px 28px;
+        font-size: 1rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .music-title {
+        font-size: 1.6rem;
+    }
+
+    .music-artist {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .music-detail-header {
+        padding: 30px 15px 20px;
+    }
+
+    .music-cover-large {
+        width: 140px;
+        height: 140px;
+        margin-bottom: 20px;
+    }
+
+    .download-btn-large {
+        padding: 10px 22px;
+        font-size: 0.95rem;
+    }
+}
+</style>
+
+<!-- ====================== -->
+<!-- HEADER -->
+<div class="music-detail-header">
+    <div class="music-detail-container">
+        <nav class="breadcrumb">
+            <a href="{% url 'home' %}">Home</a> &gt;
+            <a href="{% url 'music_list' %}">Music</a> &gt;
+            <span>{{ track.title }}</span>
+        </nav>
+        <h1 class="music-title">{{ track.title }}</h1>
+        <p class="music-artist">{{ track.artist }}</p>
+    </div>
+</div>
+
+<!-- ====================== -->
+<!-- PLAYER -->
+<div class="music-detail-container">
+    <div class="music-player-container">
+        {% if track.cover_image %}
+            <img src="{{ track.cover_image.url }}" alt="{{ track.title }}" class="music-cover-large">
+        {% else %}
+            <div style="background: #f0f0f0; width: 260px; height: 260px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; color: #999; font-size: 4rem;">
+                🎵
+            </div>
+        {% endif %}
+
+        <audio class="audio-player" controls>
+            <source src="{{ track.audio_file.url }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <div class="music-stats">
+            <span>▶️ {{ track.play_count }} plays</span>
+            <span>📥 {{ track.download_count }} downloads</span>
+            {% if track.duration %}
+                <span>⏱️ {{ track.duration }}</span>
+            {% endif %}
+        </div>
+
+        <a href="{% url 'download_music' track.pk %}" class="download-btn-large">Download MP3</a>
+    </div>
+
+    <!-- ====================== -->
+    <!-- INFO -->
+    <div class="music-info">
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-label">Artist</div>
+                <div class="info-value">{{ track.artist }}</div>
+            </div>
+
+            {% if track.album %}
+            <div class="info-item">
+                <div class="info-label">Album</div>
+                <div class="info-value">{{ track.album }}</div>
+            </div>
+            {% endif %}
+
+            {% if track.genre %}
+            <div class="info-item">
+                <div class="info-label">Genre</div>
+                <div class="info-value">{{ track.genre }}</div>
+            </div>
+            {% endif %}
+            
+
+            {% if track.release_date %}
+            <div class="info-item">
+                <div class="info-label">Release Date</div>
+                <div class="info-value">{{ track.release_date|date:"F j, Y" }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ====================== -->
+    <!-- RELATED MUSIC -->
+    {% if related_tracks %}
+    <div class="related-music">
+        <h2 class="related-title">Related Music</h2>
+        <div class="related-grid">
+            {% for related in related_tracks %}
+            <div class="related-card">
+                {% if related.cover_image %}
+                    <a href="{% url 'music_detail' related.pk %}">
+                        <img src="{{ related.cover_image.url }}" alt="{{ related.title }}" class="related-cover">
+                    </a>
+                {% else %}
+                    <a href="{% url 'music_detail' related.pk %}">
+                        <div style="background:#f0f0f0; width:100%; height:160px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#aaa; font-size:2rem;">🎶</div>
+                    </a>
+                {% endif %}
+                <a href="{% url 'music_detail' related.pk %}" class="related-title-small">{{ related.title }}</a>
+                <div class="related-artist">{{ related.artist }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

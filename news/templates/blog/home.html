@@ -1,0 +1,166 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="bbc-container">
+    
+    <!-- Welcome Section -->
+ <div class="affiliate-banner-slider">
+    <div class="affiliate-banner-track" id="bannerTrack">
+        {% for banner in active_banners %}
+        <a href="{{ banner.link }}" target="_blank" class="affiliate-banner-item">
+            <img src="{{ banner.image.url }}" alt="{{ banner.title }}">
+            <span class="banner-title">{{ banner.title }}</span>
+        </a>
+        {% empty %}
+        <p>No banners available</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.affiliate-banner-slider {
+    width: 100%;
+    overflow: hidden;
+    background: #5c0c0c;
+    border: 1px solid #ddd;
+    border-radius: 12px; /* rounded corners for container */
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.affiliate-banner-track {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    will-change: transform;
+}
+
+.affiliate-banner-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+    text-decoration: none;
+    color: #333;
+    flex: 0 0 auto;
+}
+
+.affiliate-banner-item img {
+    height: 80px;      /* fixed height */
+    width: auto;       /* auto width */
+    border-radius: 8px; /* rounded banner image */
+    object-fit: contain;
+    display: block;
+}
+
+.banner-title {
+    font-size: 13px;
+    margin-top: 4px;
+    text-align: center;
+    color: #7ddd60;
+}
+</style>
+
+<script>
+const track = document.getElementById('bannerTrack');
+
+// Duplicate banners for seamless infinite scroll
+track.innerHTML += track.innerHTML;
+
+let position = 0;
+const speed = 0.8; // smaller = slower
+
+function animate() {
+    position -= speed;
+    if (Math.abs(position) >= track.scrollWidth / 2) {
+        position = 0;
+    }
+    track.style.transform = `translateX(${position}px)`;
+    requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+
+
+    
+
+    <!-- Featured Posts -->
+    {% if featured_posts %}
+    <section class="featured-section">
+        <h2 class="section-title">Featured Stories</h2>
+        <div class="featured-grid">
+            {% for post in featured_posts %}
+            <div class="featured-item">
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="featured-image">
+                {% endif %}
+                <div class="featured-content">
+                 
+                    <h3><a href="{% url 'post_detail' post.slug %}" style="color:  #14db14;">{{ post.title }}</a></h3>
+                    <p>{{ post.excerpt|truncatewords:12 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </section>
+    {% endif %}
+
+    <!-- Trending Posts -->
+    {% if trending_posts %}
+    <section class="trending-section">
+        <h2 class="section-title">Trending Now</h2>
+        <div class="trending-grid">
+            {% for post in trending_posts %}
+            <div class="trending-item">
+                <span class="trending-number">{{ forloop.counter }}</span>
+                <div class="trending-content">
+                    <h4><a href="{% url 'post_detail' post.slug %}" style="color:  #14db14;">{{ post.title }}</a></h4>
+                    <span class="category-tag" style="color: {{ post.category.color }};">
+                        {{ post.category.name }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </section>
+    {% endif %}
+
+    <!-- Posts by Category -->
+    {% for category, posts in category_posts.items %}
+    <section class="category-section">
+        <h2 class="section-title" style="border-left: 4px solid {{ category.color }}; padding-left: 10px;">
+            {{ category.name }}
+        </h2>
+        <div class="category-grid">
+            {% for post in posts %}
+            <article class="post-card">
+                {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
+                {% endif %}
+                <div class="post-content">
+
+                    <span class="category-badge" style="background-color: {{ category.color }}; color: #fff; font-size: 12px; padding: 3px 8px; border-radius: 3px; display: inline-block; margin-bottom: 8px;">
+                    {{ category.name }}
+                </span>
+                    <h3><a href="{% url 'post_detail' post.slug %}" style="color:  #14db14;">{{ post.title }}</a></h3>
+                    <p>{{ post.excerpt|truncatewords:15}}</p>
+                    <div class="post-meta">
+                        <span class="post-date">{{ post.published_date|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="view-all">
+            <a href="{% url 'category_posts' category.slug %}" class="view-all-link">View all {{ category.name }} →</a>
+        </div>
+    </section>
+    {% endfor %}
+</div>
+{% endblock %}
+

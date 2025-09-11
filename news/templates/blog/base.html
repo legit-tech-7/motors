@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}legitexs{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'news/css/bbc-style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+
+     <script data-ad-client="ca-pub-XXXXXXXXXXXX" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+<body>
+    <!-- Overlay for mobile menu -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- BBC Header -->
+    <header class="bbc-header">
+        <div class="header-container">
+            <div class="header-top">
+                <div class="bbc-logo">
+                    <span class="logo-text">DNN</span>
+                </div>
+
+                <div class="nav-searc">
+                    <form action="{% url 'search_posts' %}" method="get" class="search-for">
+                        <input type="text" name="q" placeholder="Search " class="searc-input">
+                        <button type="submit" class="search-butto">Search</button>
+                    </form>
+                </div>
+                <button class="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+                <!-- <div class="header-signin">
+                    <a href="#" class="signin-link">Sign in</a>
+                </div> -->
+            </div>
+            
+            <!-- Main Navigation -->
+            <nav class="bbc-nav" id="mainNav" >
+                <button class="close-menu" aria-label="Close menu"></button>
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="{% url 'music_list' %}" class="nav-link" style="color: #fa4b2d;">Music</a></li>
+                    {% for category in main_categories %}
+                    <li class="nav-item">
+                        <a href="{% url 'category_posts' category.slug %}" class="nav-link" style="color: {{ category.color }};">
+                            {{ category.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                
+                <!-- Search -->
+                <div class="nav-search">
+                    <form action="{% url 'search_posts' %}" method="get" class="search-form">
+                        <input type="text" name="q" placeholder="Search BBC" class="search-input">
+                        <button type="submit" class="search-button">Search</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div>
+         <nav class="bbc-na"  >
+                <button class="close-menu" aria-label="Close menu"></button>
+                <ul class="nav-lis">
+                    <li class="nav-ite"><a href="{% url 'home' %}" class="nav-lin">Home</a></li>
+                    <li class="nav-ite"><a href="{% url 'music_list' %}" class="nav-lin" style="color: #fa4b2d;">Music</a></li>
+                    {% for category in main_categories %}
+                    <li class="nav-ite">
+                        <a href="{% url 'category_posts' category.slug %}" class="nav-lin" style="color: {{ category.color }};">
+                            {{ category.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                
+               
+            </nav>
+
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- BBC Footer -->
+    <footer class="bbc-footer">
+        <div class="footer-container">
+            <h3>Explore the BBC</h3>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Categories</h4>
+                    <ul>
+                        {% for category in main_categories %}
+                        <li><a href="{% url 'category_posts' category.slug %}">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 BBC Blog. This is a demonstration site.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'news/js/scripts.js' %}"></script>
+</body>
+</html>

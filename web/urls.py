@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('car.urls')),
+    path('', include('news.urls')),
     
     # Change this line to match what you need:
     path('login/', auth_views.LoginView.as_view(template_name='car/login.html'), name='login'),

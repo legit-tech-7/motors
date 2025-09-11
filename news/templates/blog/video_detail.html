@@ -1,0 +1,242 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}{{ video.title }} - BBC Video News{% endblock %}
+
+{% block content %}
+<style>
+/* ------------------------------ */
+/* Body & Typography */
+.bbc-container {
+    background: #f6f6f6;
+    min-height: 70vh;
+    padding: 20px;
+}
+
+/* Header */
+.video-detail-header {
+    background: linear-gradient(135deg, #0887c5 0%, #149c7d 100%);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.breadcrumb {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.breadcrumb a {
+    color: white;
+    text-decoration: none;
+}
+
+.video-title {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+    font-family: 'Georgia', serif;
+    line-height: 1.3;
+}
+
+.video-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+    justify-content: center;
+}
+
+.video-category {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Video Player */
+.video-player-container {
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    margin: 0 auto 30px;
+    max-width: 900px;
+}
+
+.video-player {
+    width: 100%;
+    height: auto;
+    min-height: 400px;
+}
+
+/* Video Info */
+.video-info {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.video-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.video-stats {
+    display: flex;
+    gap: 25px;
+    color: #666;
+    font-size: 0.95rem;
+    padding-top: 20px;
+    border-top: 1px solid #e6e6e6;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Related Videos */
+.related-videos {
+    max-width: 1000px;
+    margin: 0 auto 40px;
+}
+
+.related-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.related-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.related-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+}
+
+.related-cover {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.related-title-small {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 5px 0;
+    color: #222;
+}
+
+.related-meta {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .video-detail-header { padding: 30px 15px; }
+    .video-title { font-size: 1.7rem; }
+    .video-player { min-height: 250px; }
+    .video-info { padding: 20px; }
+}
+</style>
+
+<!-- ====================== -->
+<div class="bbc-container">
+    <div class="video-detail-header">
+        <nav class="breadcrumb">
+            <a href="{% url 'home' %}">Home</a> &gt;
+            <a href="{% url 'video_list' %}">Videos</a> &gt;
+            <span>{{ video.title }}</span>
+        </nav>
+        <h1 class="video-title">{{ video.title }}</h1>
+        <div class="video-meta">
+            <span class="video-category">{{ video.category.name }}</span>
+            <span>📅 {{ video.publish_date|date:"F j, Y" }}</span>
+            <span>👁️ {{ video.view_count }} views</span>
+        </div>
+    </div>
+
+    <!-- Video Player -->
+    <div class="video-player-container">
+        {% if video.video_file %}
+        <video class="video-player" controls controlsList="nodownload" poster="{% if video.thumbnail %}{{ video.thumbnail.url }}{% endif %}">
+            <source src="{{ video.video_file.url }}" type="video/mp4">
+            <source src="{{ video.video_file.url }}" type="video/webm">
+            <source src="{{ video.video_file.url }}" type="video/ogg">
+            Your browser does not support the video tag.
+        </video>
+        {% else %}
+        <div style="background: #333; color: white; padding: 60px 20px; text-align: center;">
+            <p style="font-size: 2rem;">🎥</p>
+            <p>Video not available</p>
+            <p>Please check back later.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Video Information -->
+    <div class="video-info">
+        {% if video.description %}
+        <div class="video-description">
+            {{ video.description|linebreaks }}
+        </div>
+        {% endif %}
+
+        <div class="video-stats">
+            <div class="stat-item">👁️ {{ video.view_count }} views</div>
+            <div class="stat-item">📅 Published {{ video.publish_date|date:"F j, Y" }}</div>
+            <div class="stat-item">🏷️ Category: {{ video.category.name }}</div>
+        </div>
+    </div>
+
+    <!-- Related Videos -->
+    {% if related_videos %}
+    <div class="related-videos">
+        <h2 class="related-title">Related Videos</h2>
+        <div class="related-grid">
+            {% for rel in related_videos %}
+            <div class="related-card">
+                <a href="{% url 'video_detail' rel.slug %}">
+                    {% if rel.thumbnail %}
+                        <img src="{{ rel.thumbnail.url }}" alt="{{ rel.title }}" class="related-cover">
+                    {% else %}
+                        <div style="background:#ddd; height:140px; display:flex; align-items:center; justify-content:center; font-size:2rem;">🎬</div>
+                    {% endif %}
+                    <div class="related-title-small">{{ rel.title }}</div>
+                    <div class="related-meta">{{ rel.category.name }} | {{ rel.publish_date|date:"M j, Y" }}</div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
